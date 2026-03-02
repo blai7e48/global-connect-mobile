@@ -9,21 +9,46 @@ type IconMapping = Record<SymbolViewProps["name"], ComponentProps<typeof Materia
 type IconSymbolName = keyof typeof MAPPING;
 
 /**
- * Add your SF Symbols to Material Icons mappings here.
- * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
- * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
+ * SF Symbols to Material Icons mappings.
  */
 const MAPPING = {
   "house.fill": "home",
   "paperplane.fill": "send",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
+  "person.2.fill": "people",
+  "calendar": "event",
+  "bubble.left.and.bubble.right.fill": "forum",
+  "person.circle.fill": "account-circle",
+  "magnifyingglass": "search",
+  "gearshape.fill": "settings",
+  "arrow.right.square": "logout",
+  "plus": "add",
+  "xmark": "close",
+  "chevron.left": "chevron-left",
+  "star.fill": "star",
+  "hand.thumbsup.fill": "thumb-up",
+  "checkmark.circle.fill": "check-circle",
+  "clock.fill": "schedule",
+  "mappin.and.ellipse": "location-on",
+  "briefcase.fill": "work",
+  "building.2.fill": "business",
+  "person.fill": "person",
+  "bell.fill": "notifications",
+  "pencil": "edit",
+  "arrow.up.circle.fill": "arrow-upward",
+  "link": "link",
+  "ellipsis": "more-horiz",
+  "tag.fill": "label",
+  "bolt.fill": "flash-on",
+  "heart.fill": "favorite",
+  "exclamationmark.triangle.fill": "warning",
+  "info.circle.fill": "info",
+  "shield.fill": "verified-user",
 } as IconMapping;
 
 /**
  * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
  */
 export function IconSymbol({
   name,

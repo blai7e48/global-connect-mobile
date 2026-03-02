@@ -1,0 +1,27 @@
+# Project TODO
+
+- [x] Configure theme colors (indigo brand palette)
+- [x] Set up icon mappings in icon-symbol.tsx
+- [x] Create database schema (profiles, sessions, community_posts, community_answers)
+- [x] Set up tRPC API routes (profiles, sessions, community, AI matching)
+- [x] Create auth context and role management
+- [x] Build Welcome/Login screen
+- [x] Build Onboarding screen (role selection + profile setup)
+- [x] Build Home/Dashboard screen (student + mentor variants)
+- [x] Build Discover screen (mentor browsing with search/filters)
+- [x] Build Mentor Detail screen with session request modal
+- [x] Build Sessions screen (Upcoming/Pending/Past tabs)
+- [x] Build Session Detail screen with accept/decline
+- [x] Build Community Q&A feed screen
+- [x] Build Post Detail screen with answers
+- [x] Build Create Post modal
+- [x] Build Profile screen
+- [x] Build Edit Profile screen
+- [x] Build Settings screen
+- [x] Implement AI match score (LLM-based)
+- [x] Add haptic feedback throughout
+- [x] Add pull-to-refresh on list screens
+- [x] Dark mode support
+- [x] Generate app logo
+- [x] Unit tests for format utilities
+- [ ] Push to GitHub
