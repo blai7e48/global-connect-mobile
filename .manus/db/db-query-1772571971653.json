@@ -1,0 +1,54 @@
+{
+  "query": "SELECT 'demo_users' as category, COUNT(*) as total FROM users WHERE openId LIKE 'demo_%'; SELECT 'mentors' as category, COUNT(*) as total FROM profiles WHERE appRole = 'mentor'; SELECT 'students' as category, COUNT(*) as total FROM profiles WHERE appRole = 'student'; SELECT 'sessions' as category, COUNT(*) as total FROM sessions; SELECT 'posts' as category, COUNT(*) as total FROM communityPosts; SELECT 'answers' as category, COUNT(*) as total FROM communityAnswers;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user ZBa3x8PMixxeLck.root --database E8wdBKxE4n9UStb7X2SeG4 --execute SELECT 'demo_users' as category, COUNT(*) as total FROM users WHERE openId LIKE 'demo_%'; SELECT 'mentors' as category, COUNT(*) as total FROM profiles WHERE appRole = 'mentor'; SELECT 'students' as category, COUNT(*) as total FROM profiles WHERE appRole = 'student'; SELECT 'sessions' as category, COUNT(*) as total FROM sessions; SELECT 'posts' as category, COUNT(*) as total FROM communityPosts; SELECT 'answers' as category, COUNT(*) as total FROM communityAnswers;",
+  "rows": [
+    {
+      "category": "demo_users",
+      "total": "20"
+    },
+    {
+      "category": "category",
+      "total": "total"
+    },
+    {
+      "category": "mentors",
+      "total": "12"
+    },
+    {
+      "category": "category",
+      "total": "total"
+    },
+    {
+      "category": "students",
+      "total": "8"
+    },
+    {
+      "category": "category",
+      "total": "total"
+    },
+    {
+      "category": "sessions",
+      "total": "10"
+    },
+    {
+      "category": "category",
+      "total": "total"
+    },
+    {
+      "category": "posts",
+      "total": "8"
+    },
+    {
+      "category": "category",
+      "total": "total"
+    },
+    {
+      "category": "answers",
+      "total": "12"
+    }
+  ],
+  "messages": [],
+  "stdout": "category\ttotal\ndemo_users\t20\ncategory\ttotal\nmentors\t12\ncategory\ttotal\nstudents\t8\ncategory\ttotal\nsessions\t10\ncategory\ttotal\nposts\t8\ncategory\ttotal\nanswers\t12\n",
+  "stderr": "",
+  "execution_time_ms": 84
+}

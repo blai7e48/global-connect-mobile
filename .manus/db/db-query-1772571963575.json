@@ -1,0 +1,30 @@
+{
+  "query": "SELECT 'users' as tbl, COUNT(*) as cnt FROM users WHERE openId LIKE 'demo_%' UNION ALL SELECT 'profiles', COUNT(*) FROM profiles UNION ALL SELECT 'sessions', COUNT(*) FROM sessions UNION ALL SELECT 'communityPosts', COUNT(*) FROM communityPosts UNION ALL SELECT 'communityAnswers', COUNT(*) FROM communityAnswers;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user ZBa3x8PMixxeLck.root --database E8wdBKxE4n9UStb7X2SeG4 --execute SELECT 'users' as tbl, COUNT(*) as cnt FROM users WHERE openId LIKE 'demo_%' UNION ALL SELECT 'profiles', COUNT(*) FROM profiles UNION ALL SELECT 'sessions', COUNT(*) FROM sessions UNION ALL SELECT 'communityPosts', COUNT(*) FROM communityPosts UNION ALL SELECT 'communityAnswers', COUNT(*) FROM communityAnswers;",
+  "rows": [
+    {
+      "tbl": "users",
+      "cnt": "20"
+    },
+    {
+      "tbl": "communityPosts",
+      "cnt": "8"
+    },
+    {
+      "tbl": "sessions",
+      "cnt": "10"
+    },
+    {
+      "tbl": "communityAnswers",
+      "cnt": "12"
+    },
+    {
+      "tbl": "profiles",
+      "cnt": "20"
+    }
+  ],
+  "messages": [],
+  "stdout": "tbl\tcnt\nusers\t20\ncommunityPosts\t8\nsessions\t10\ncommunityAnswers\t12\nprofiles\t20\n",
+  "stderr": "",
+  "execution_time_ms": 139
+}

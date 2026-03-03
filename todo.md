@@ -24,4 +24,8 @@
 - [x] Dark mode support
 - [x] Generate app logo
 - [x] Unit tests for format utilities
-- [ ] Push to GitHub
+- [x] Push to GitHub
+- [x] Build landing page with waitlist signup form
+- [x] Deploy landing page with shareable public URL (gh-pages branch pushed)
+- [x] Populate demo database with realistic seed data (mentors, students, sessions, posts, replies)
+- [x] Verify seed data renders correctly in the app
