@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Connect — Where Students Meet Mentors</title>
+  <meta name="description" content="AI-powered professional networking for students and mentors. Get matched with industry leaders, book 1-on-1 sessions, and grow your career." />
+  <link rel="icon" href="https://files.manuscdn.com/user_upload_by_module/session_file/310519663389061202/fGTcJboTHXWdUpeS.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0a0a1a;
+      --bg-secondary: #0f0f2a;
+      --bg-card: rgba(99, 102, 241, 0.06);
+      --bg-card-border: rgba(99, 102, 241, 0.15);
+      --text-primary: #f1f1f7;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --accent: #6366f1;
+      --accent-light: #818cf8;
+      --accent-glow: rgba(99, 102, 241, 0.3);
+      --success: #22c55e;
+      --radius: 16px;
+      --radius-sm: 12px;
+      --max-width: 1200px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Ambient background ── */
+    .ambient-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 60%, rgba(139,92,246,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(59,130,246,0.06) 0%, transparent 50%);
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(10, 10, 26, 0.75);
+      border-bottom: 1px solid rgba(99, 102, 241, 0.08);
+    }
+    .nav-inner {
+      max-width: var(--max-width); margin: 0 auto;
+      padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; color: var(--text-primary);
+    }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 8px; }
+    .nav-logo span { font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none; font-size: 14px;
+      font-weight: 500; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-cta {
+      background: var(--accent) !important; color: #fff !important;
+      padding: 8px 20px; border-radius: 100px; font-weight: 600;
+      transition: all 0.2s; font-size: 14px !important;
+    }
+    .nav-cta:hover { background: var(--accent-light) !important; transform: translateY(-1px); }
+
+    @media (max-width: 768px) {
+      .nav-links a:not(.nav-cta) { display: none; }
+    }
+
+    /* ── Sections ── */
+    section { position: relative; z-index: 1; }
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 160px 0 100px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--bg-card); border: 1px solid var(--bg-card-border);
+      padding: 6px 16px; border-radius: 100px;
+      font-size: 13px; font-weight: 500; color: var(--accent-light);
+      margin-bottom: 32px;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--success);
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.08; margin-bottom: 24px;
+      background: linear-gradient(135deg, #f1f1f7 30%, var(--accent-light) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      max-width: 600px; margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+
+    /* ── Waitlist form ── */
+    .waitlist-form {
+      display: flex; gap: 12px;
+      max-width: 480px; margin: 0 auto 24px;
+    }
+    .waitlist-form input {
+      flex: 1; padding: 14px 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px; color: #fff;
+      font-size: 15px; font-family: inherit;
+      outline: none; transition: border-color 0.2s;
+    }
+    .waitlist-form input::placeholder { color: var(--text-muted); }
+    .waitlist-form input:focus { border-color: var(--accent); }
+    .waitlist-form button {
+      padding: 14px 32px;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 100px;
+      font-size: 15px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .waitlist-form button:hover { background: var(--accent-light); transform: translateY(-1px); }
+    .waitlist-form button:active { transform: scale(0.98); }
+
+    .waitlist-count {
+      font-size: 13px; color: var(--text-muted);
+    }
+    .waitlist-count strong { color: var(--text-secondary); }
+
+    .form-success {
+      display: none; text-align: center;
+      padding: 20px; max-width: 480px; margin: 0 auto;
+    }
+    .form-success.show { display: block; }
+    .form-success .check {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(34, 197, 94, 0.15);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .form-success .check svg { color: var(--success); }
+    .form-success h3 { font-size: 20px; margin-bottom: 8px; }
+    .form-success p { color: var(--text-secondary); font-size: 14px; }
+
+    /* ── Hero image ── */
+    .hero-image {
+      margin-top: 64px;
+      display: flex; justify-content: center;
+    }
+    .hero-image img {
+      max-width: 380px; width: 100%;
+      border-radius: 24px;
+      filter: drop-shadow(0 40px 80px rgba(99, 102, 241, 0.25));
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* ── Stats bar ── */
+    .stats {
+      padding: 60px 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 36px; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-light), #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+    @media (max-width: 640px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ── Features ── */
+    .features { padding: 120px 0; }
+    .section-label {
+      font-size: 13px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--accent-light);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800; letter-spacing: -0.02em;
+      margin-bottom: 16px; line-height: 1.15;
+    }
+    .section-desc {
+      font-size: 17px; color: var(--text-secondary);
+      max-width: 560px; line-height: 1.7;
+      margin-bottom: 64px;
+    }
+
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: all 0.3s;
+    }
+    .feature-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1);
+    }
+    .feature-card img {
+      width: 100%; aspect-ratio: 1; object-fit: cover;
+      border-radius: var(--radius-sm); margin-bottom: 24px;
+    }
+    .feature-card h3 {
+      font-size: 20px; font-weight: 700; margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .feature-card p {
+      font-size: 14px; color: var(--text-secondary); line-height: 1.7;
+    }
+
+    @media (max-width: 768px) {
+      .features-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+    }
+
+    /* ── How it works ── */
+    .how-it-works { padding: 120px 0; }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+      margin-top: 64px;
+    }
+    .step {
+      text-align: center; position: relative;
+    }
+    .step-number {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; margin-bottom: 20px;
+    }
+    .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .step p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+    @media (max-width: 768px) {
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .steps-grid { grid-template-columns: 1fr; max-width: 300px; margin: 64px auto 0; }
+    }
+
+    /* ── Testimonials ── */
+    .testimonials { padding: 120px 0; }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+      margin-top: 64px;
+    }
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+    .testimonial-stars {
+      color: #fbbf24; font-size: 16px; margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+    .testimonial-card blockquote {
+      font-size: 15px; color: var(--text-secondary);
+      line-height: 1.7; margin-bottom: 20px;
+      font-style: italic;
+    }
+    .testimonial-author {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .testimonial-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 16px; color: #fff;
+    }
+    .testimonial-name { font-size: 14px; font-weight: 600; }
+    .testimonial-role { font-size: 12px; color: var(--text-muted); }
+
+    @media (max-width: 768px) {
+      .testimonials-grid { grid-template-columns: 1fr; max-width: 480px; margin: 64px auto 0; }
+    }
+
+    /* ── Final CTA ── */
+    .final-cta {
+      padding: 120px 0;
+      text-align: center;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 24px;
+      padding: 80px 40px;
+      position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(99,102,241,0.1) 0%, transparent 70%);
+    }
+    .cta-box > * { position: relative; z-index: 1; }
+    .cta-box h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800; letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .cta-box p {
+      font-size: 17px; color: var(--text-secondary);
+      max-width: 500px; margin: 0 auto 40px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-left { display: flex; align-items: center; gap: 12px; }
+    .footer-left img { width: 28px; height: 28px; border-radius: 6px; }
+    .footer-left span { font-weight: 600; font-size: 15px; }
+    .footer-right { font-size: 13px; color: var(--text-muted); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text-secondary); }
+
+    @media (max-width: 640px) {
+      .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
+      .waitlist-form { flex-direction: column; }
+      .waitlist-form button { width: 100%; }
+    }
+
+    /* ── Animations ── */
+    .fade-up {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <div class="ambient-bg"></div>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663389061202/fGTcJboTHXWdUpeS.png" alt="Global Connect" />
+        <span>Global Connect</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#waitlist-bottom" class="nav-cta">Join Waitlist</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="fade-up">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Now accepting early access signups
+        </div>
+        <h1>Where Students<br/>Meet Mentors</h1>
+        <p>AI-powered matching connects you with industry leaders for 1-on-1 mentorship sessions. Build your career with guidance from those who've been there.</p>
+      </div>
+
+      <div class="fade-up" id="waitlist-top">
+        <form class="waitlist-form" id="waitlistFormTop" onsubmit="return handleWaitlist(event, 'top')">
+          <input type="email" placeholder="Enter your email address" required />
+          <button type="submit">Join Waitlist</button>
+        </form>
+        <p class="waitlist-count"><strong>2,400+</strong> people already on the waitlist</p>
+      </div>
+
+      <div class="form-success" id="successTop">
+        <div class="check">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h3>You're on the list!</h3>
+        <p>We'll notify you as soon as Global Connect launches. Check your inbox for a confirmation.</p>
+      </div>
+
+      <div class="hero-image fade-up">
+        <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663389061202/E8wdBKxE4n9UStb7X2SeG4/hero-mockup-DtJWWrYSEGqcFmSydsxLFm.webp" alt="Global Connect App" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid fade-up">
+        <div>
+          <div class="stat-number">500+</div>
+          <div class="stat-label">Verified Mentors</div>
+        </div>
+        <div>
+          <div class="stat-number">50+</div>
+          <div class="stat-label">Industries Covered</div>
+        </div>
+        <div>
+          <div class="stat-number">95%</div>
+          <div class="stat-label">Match Satisfaction</div>
+        </div>
+        <div>
+          <div class="stat-number">10K+</div>
+          <div class="stat-label">Sessions Booked</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="fade-up">
+        <div class="section-label">Features</div>
+        <div class="section-title">Everything you need to<br/>accelerate your career</div>
+        <div class="section-desc">From AI-powered matching to real-time community support, Global Connect gives you the tools to find the right mentor and grow.</div>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card fade-up">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663389061202/E8wdBKxE4n9UStb7X2SeG4/feature-matching-Qnkj64FitaSQcHAB4gzwuG.webp" alt="AI Matching" />
+          <h3>AI-Powered Matching</h3>
+          <p>Our intelligent algorithm analyzes your skills, goals, and interests to find mentors who are the perfect fit for your career path.</p>
+        </div>
+        <div class="feature-card fade-up">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663389061202/E8wdBKxE4n9UStb7X2SeG4/feature-sessions-Yh7gxNHYaLHqeagWGMiTCZ.webp" alt="Session Booking" />
+          <h3>1-on-1 Sessions</h3>
+          <p>Book mentorship sessions with a few taps. Choose your preferred time, topic, and format. Accept, reschedule, or review past sessions seamlessly.</p>
+        </div>
+        <div class="feature-card fade-up">
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663389061202/E8wdBKxE4n9UStb7X2SeG4/feature-community-koxFEu2FyLbB2nqhPcoti4.webp" alt="Community" />
+          <h3>Community Q&A</h3>
+          <p>Ask questions, share insights, and learn from a vibrant community of students and professionals across every industry.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="fade-up" style="text-align: center;">
+        <div class="section-label">How It Works</div>
+        <div class="section-title">Get started in minutes</div>
+      </div>
+      <div class="steps-grid">
+        <div class="step fade-up">
+          <div class="step-number">1</div>
+          <h3>Create Your Profile</h3>
+          <p>Sign up and tell us about your skills, interests, and career goals.</p>
+        </div>
+        <div class="step fade-up">
+          <div class="step-number">2</div>
+          <h3>Get Matched</h3>
+          <p>Our AI analyzes your profile and suggests mentors with the highest compatibility.</p>
+        </div>
+        <div class="step fade-up">
+          <div class="step-number">3</div>
+          <h3>Book a Session</h3>
+          <p>Pick a time that works for both of you and request a mentorship session.</p>
+        </div>
+        <div class="step fade-up">
+          <div class="step-number">4</div>
+          <h3>Grow Together</h3>
+          <p>Meet, learn, and build a lasting professional relationship with your mentor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="fade-up" style="text-align: center;">
+        <div class="section-label">Testimonials</div>
+        <div class="section-title">Loved by students and mentors</div>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card fade-up">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <blockquote>"Global Connect matched me with a senior engineer at Google. Within three sessions, I had a roadmap for my career and a referral for my dream internship."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">S</div>
+            <div>
+              <div class="testimonial-name">Sarah Kim</div>
+              <div class="testimonial-role">CS Student, Stanford</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <blockquote>"As a mentor, this app makes it incredibly easy to give back. The AI matching means I only connect with students who truly benefit from my expertise."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">M</div>
+            <div>
+              <div class="testimonial-name">Marcus Johnson</div>
+              <div class="testimonial-role">VP of Engineering, Stripe</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card fade-up">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <blockquote>"The community Q&A alone is worth it. I've gotten more actionable career advice here in a month than in four years of college."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">A</div>
+            <div>
+              <div class="testimonial-name">Aisha Patel</div>
+              <div class="testimonial-role">Business Major, NYU</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta" id="waitlist-bottom">
+    <div class="container">
+      <div class="cta-box fade-up">
+        <h2>Ready to find your mentor?</h2>
+        <p>Join thousands of students and professionals building meaningful connections. Be the first to know when we launch.</p>
+        <form class="waitlist-form" id="waitlistFormBottom" onsubmit="return handleWaitlist(event, 'bottom')">
+          <input type="email" placeholder="Enter your email address" required />
+          <button type="submit">Join Waitlist</button>
+        </form>
+        <div class="form-success" id="successBottom">
+          <div class="check">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <h3>You're on the list!</h3>
+          <p>We'll notify you as soon as Global Connect launches.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663389061202/fGTcJboTHXWdUpeS.png" alt="Global Connect" />
+          <span>Global Connect</span>
+        </div>
+        <div class="footer-links">
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="https://github.com/blai7e48/global-connect-mobile" target="_blank">GitHub</a>
+        </div>
+        <div class="footer-right">&copy; 2026 Global Connect. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for fade-up animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Waitlist form handler
+    function handleWaitlist(e, location) {
+      e.preventDefault();
+      const form = e.target;
+      const email = form.querySelector('input[type="email"]').value;
+
+      // Store email in localStorage
+      const waitlist = JSON.parse(localStorage.getItem('gc_waitlist') || '[]');
+      if (!waitlist.includes(email)) {
+        waitlist.push(email);
+        localStorage.setItem('gc_waitlist', JSON.stringify(waitlist));
+      }
+
+      // Show success
+      form.style.display = 'none';
+      const successEl = document.getElementById(location === 'top' ? 'successTop' : 'successBottom');
+      successEl.classList.add('show');
+
+      // Hide the waitlist count if top form
+      if (location === 'top') {
+        const countEl = form.nextElementSibling;
+        if (countEl) countEl.style.display = 'none';
+      }
+
+      return false;
+    }
+  </script>
+</body>
+</html>
