@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useAuth } from "@/hooks/use-auth";
 import { useColors } from "@/hooks/use-colors";
+import { BackButton } from "@/components/ui/back-button";
 import { startOAuthLogin } from "@/constants/oauth";
 import { useEffect } from "react";
 
@@ -41,12 +42,9 @@ export default function LoginScreen() {
             onPress={() => startOAuthLogin()}
             size="lg"
           />
-          <Button
-            title="Back"
-            onPress={() => router.back()}
-            variant="ghost"
-            size="md"
-          />
+          <View className="items-center mt-2">
+            <BackButton label="Back to Welcome" />
+          </View>
         </View>
       )}
     </ScreenContainer>

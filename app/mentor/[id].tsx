@@ -9,6 +9,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/text-input";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { BackButton } from "@/components/ui/back-button";
 import { useColors } from "@/hooks/use-colors";
 import { trpc } from "@/lib/trpc";
 
@@ -64,11 +65,8 @@ export default function MentorDetailScreen() {
     <ScreenContainer>
       <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
         {/* Back Button */}
-        <View className="px-5 pt-3">
-          <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} className="flex-row items-center">
-            <IconSymbol name="chevron.left" size={22} color={colors.primary} />
-            <Text className="text-base text-primary ml-1">Back</Text>
-          </TouchableOpacity>
+        <View className="px-5 pt-2">
+          <BackButton />
         </View>
 
         {/* Hero */}

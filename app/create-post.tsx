@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/text-input";
 import { TagInput } from "@/components/ui/tag-input";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { BackButton } from "@/components/ui/back-button";
 import { useColors } from "@/hooks/use-colors";
 import { trpc } from "@/lib/trpc";
 
@@ -46,11 +47,9 @@ export default function CreatePostScreen() {
       <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 40 }}>
         {/* Header */}
         <View className="flex-row items-center justify-between mb-6">
-          <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7}>
-            <IconSymbol name="xmark" size={24} color={colors.muted} />
-          </TouchableOpacity>
+          <BackButton />
           <Text className="text-xl font-bold text-foreground">New Question</Text>
-          <View style={{ width: 24 }} />
+          <View style={{ width: 60 }} />
         </View>
 
         <View className="gap-4">

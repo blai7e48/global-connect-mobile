@@ -29,3 +29,5 @@
 - [x] Deploy landing page with shareable public URL (gh-pages branch pushed)
 - [x] Populate demo database with realistic seed data (mentors, students, sessions, posts, replies)
 - [x] Verify seed data renders correctly in the app
+- [x] Persistent login — returning users auto-signed in without re-entering info
+- [x] Back button on top-left corner of all detail/sub screens

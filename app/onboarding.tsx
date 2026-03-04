@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ui/text-input";
 import { TagInput } from "@/components/ui/tag-input";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { BackButton } from "@/components/ui/back-button";
 import { useAuth } from "@/hooks/use-auth";
 import { useAppContext } from "@/lib/app-context";
 import { useColors } from "@/hooks/use-colors";
@@ -129,9 +130,9 @@ export default function OnboardingScreen() {
   return (
     <ScreenContainer edges={["top", "bottom", "left", "right"]}>
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 40 }}>
-        <TouchableOpacity onPress={() => setStep(0)} activeOpacity={0.7} className="mb-4">
-          <IconSymbol name="chevron.left" size={24} color={colors.foreground} />
-        </TouchableOpacity>
+        <View className="mb-2">
+          <BackButton onPress={() => setStep(0)} />
+        </View>
 
         <Text className="text-3xl font-bold text-foreground">
           {role === "student" ? "Student Profile" : "Mentor Profile"}

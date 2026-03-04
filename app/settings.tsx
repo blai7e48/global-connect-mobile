@@ -5,6 +5,7 @@ import * as Haptics from "expo-haptics";
 import { ScreenContainer } from "@/components/screen-container";
 import { Card } from "@/components/ui/card";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { BackButton } from "@/components/ui/back-button";
 import { useAuth } from "@/hooks/use-auth";
 import { useAppContext } from "@/lib/app-context";
 import { useColors } from "@/hooks/use-colors";
@@ -54,11 +55,8 @@ export default function SettingsScreen() {
     <ScreenContainer>
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
         {/* Header */}
-        <View className="px-5 pt-3">
-          <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7} className="flex-row items-center">
-            <IconSymbol name="chevron.left" size={22} color={colors.primary} />
-            <Text className="text-base text-primary ml-1">Back</Text>
-          </TouchableOpacity>
+        <View className="px-5 pt-2">
+          <BackButton />
         </View>
 
         <View className="px-5 pt-4 pb-4">
