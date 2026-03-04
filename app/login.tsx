@@ -7,12 +7,39 @@ import { useAuth } from "@/hooks/use-auth";
 import { useColors } from "@/hooks/use-colors";
 import { BackButton } from "@/components/ui/back-button";
 import { startOAuthLogin } from "@/constants/oauth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import * as Auth from "@/lib/_core/auth";
 
 export default function LoginScreen() {
   const router = useRouter();
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, refresh } = useAuth();
   const colors = useColors();
+  const [demoLoading, setDemoLoading] = useState(false);
+
+  const handleDemoLogin = async () => {
+    setDemoLoading(true);
+    try {
+      // Create a demo user and save it
+      const demoUser: Auth.User = {
+        id: 1,
+        openId: "demo-student-001",
+        name: "Alex Johnson",
+        email: "alex@example.com",
+        loginMethod: "demo",
+        lastSignedIn: new Date(),
+      };
+      
+      await Auth.setUserInfo(demoUser);
+      console.log("[Demo Login] User set, refreshing auth state...");
+      
+      // Refresh auth state to trigger navigation
+      await refresh();
+    } catch (err) {
+      console.error("[Demo Login] Error:", err);
+    } finally {
+      setDemoLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!loading && isAuthenticated) {
@@ -41,6 +68,14 @@ export default function LoginScreen() {
             title="Sign In"
             onPress={() => startOAuthLogin()}
             size="lg"
+            disabled={demoLoading}
+          />
+          <Button
+            title="Demo Login (Test Account)"
+            onPress={handleDemoLogin}
+            size="lg"
+            variant="secondary"
+            disabled={demoLoading}
           />
           <View className="items-center mt-2">
             <BackButton label="Back to Welcome" />

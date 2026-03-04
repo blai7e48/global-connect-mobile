@@ -31,3 +31,4 @@
 - [x] Verify seed data renders correctly in the app
 - [x] Persistent login — returning users auto-signed in without re-entering info
 - [x] Back button on top-left corner of all detail/sub screens
+- [x] Add demo login button for quick testing on Expo Go
