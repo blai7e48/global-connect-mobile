@@ -15,6 +15,13 @@
       "when": 1772227123900,
       "tag": "0001_broken_loners",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1772808611539,
+      "tag": "0002_sticky_polaris",
+      "breakpoints": true
     }
   ]
 }

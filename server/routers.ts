@@ -217,6 +217,45 @@ Mentor: ${JSON.stringify({
         return db.upvoteAnswer(input.id);
       }),
   }),
+
+  // ─── Messaging Routes ────────────────────────────────────────
+  messaging: router({
+    listConversations: protectedProcedure.query(async ({ ctx }) => {
+      return db.listConversations(ctx.user.id);
+    }),
+
+    getConversation: protectedProcedure
+      .input(z.object({ userId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        return db.getOrCreateConversation(ctx.user.id, input.userId);
+      }),
+
+    getMessages: protectedProcedure
+      .input(z.object({ conversationId: z.number(), limit: z.number().default(50) }))
+      .query(async ({ input }) => {
+        const msgs = await db.getMessages(input.conversationId, input.limit);
+        return msgs.reverse(); // Return in chronological order
+      }),
+
+    sendMessage: protectedProcedure
+      .input(z.object({ conversationId: z.number(), content: z.string() }))
+      .mutation(async ({ ctx, input }) => {
+        const id = await db.sendMessage({
+          conversationId: input.conversationId,
+          senderId: ctx.user.id,
+          content: input.content,
+          isRead: false,
+        });
+        return { id, success: true };
+      }),
+
+    markAsRead: protectedProcedure
+      .input(z.object({ conversationId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        await db.markMessagesAsRead(input.conversationId, ctx.user.id);
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -12,6 +12,8 @@ import {
   sessions,
   communityPosts,
   communityAnswers,
+  conversations,
+  messages,
 } from "../drizzle/schema";
 
 const DATABASE_URL = process.env.DATABASE_URL;
@@ -418,6 +420,42 @@ async function seed() {
     console.log(`  ✓ Answer to post #${a.postIndex + 1} (${a.upvotes} upvotes${a.isAccepted ? ", accepted" : ""})`);
   }
 
+  // Insert demo conversations and messages
+  console.log("\n💬 Creating demo conversations and messages...");
+  const conversationPairs = [
+    { user1: mentorUserIds[0], user2: studentUserIds[0] },
+    { user1: mentorUserIds[1], user2: studentUserIds[1] },
+    { user1: mentorUserIds[2], user2: studentUserIds[2] },
+  ];
+
+  const messageTexts = [
+    "Hi! Thanks for reaching out. I'd love to help you with your AI career path.",
+    "That sounds great! When would be a good time for our first session?",
+    "How about next Tuesday at 6 PM? I'm usually available on weekday evenings.",
+    "Perfect! I'll send you the meeting link. Looking forward to chatting!",
+  ];
+
+  for (const pair of conversationPairs) {
+    const convResult = await db.insert(conversations).values({
+      user1Id: Math.min(pair.user1, pair.user2),
+      user2Id: Math.max(pair.user1, pair.user2),
+      lastMessageAt: new Date(),
+    });
+    const convId = convResult[0].insertId;
+
+    // Add a few messages to each conversation
+    for (let i = 0; i < messageTexts.length; i++) {
+      const senderId = i % 2 === 0 ? pair.user1 : pair.user2;
+      await db.insert(messages).values({
+        conversationId: convId,
+        senderId,
+        content: messageTexts[i],
+        isRead: false,
+      });
+    }
+    console.log(`  ✓ Conversation between user ${pair.user1} and ${pair.user2}`);
+  }
+
   console.log("\n✅ Seed complete!");
   console.log(`   📊 Summary:`);
   console.log(`   • ${mentorData.length} mentors`);
@@ -425,7 +463,8 @@ async function seed() {
   console.log(`   • ${sessionTemplates.length} sessions`);
   console.log(`   • ${postData.length} community posts`);
   console.log(`   • ${answerData.length} community answers`);
-  console.log(`   • Total: ${mentorData.length + studentData.length + sessionTemplates.length + postData.length + answerData.length} records\n`);
+  console.log(`   • ${conversationPairs.length} conversations with messages`);
+  console.log(`   • Total: ${mentorData.length + studentData.length + sessionTemplates.length + postData.length + answerData.length + conversationPairs.length} records\n`);
 
   process.exit(0);
 }

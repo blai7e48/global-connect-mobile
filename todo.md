@@ -32,3 +32,9 @@
 - [x] Persistent login — returning users auto-signed in without re-entering info
 - [x] Back button on top-left corner of all detail/sub screens
 - [x] Add demo login button for quick testing on Expo Go
+- [x] Add messaging database schema (conversations, messages tables)
+- [x] Create messaging API routes (list conversations, get messages, send message)
+- [x] Build Messages tab screen with conversation list
+- [x] Build conversation detail screen with message thread
+- [x] Add messaging tab to bottom navigation
+- [x] Seed demo conversations and messages

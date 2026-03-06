@@ -6,7 +6,10 @@ import {
   sessions, InsertSession,
   communityPosts, InsertCommunityPost,
   communityAnswers, InsertCommunityAnswer,
+  conversations, InsertConversation,
+  messages, InsertMessage, Message,
 } from "../drizzle/schema";
+
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -268,4 +271,115 @@ export async function upvoteAnswer(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(communityAnswers).set({ upvotes: sql`${communityAnswers.upvotes} + 1` }).where(eq(communityAnswers.id, id));
+}
+
+// ─── Messaging Helpers ──────────────────────────────────────────
+
+export async function getOrCreateConversation(user1Id: number, user2Id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Normalize user IDs so order doesn't matter
+  const [minId, maxId] = user1Id < user2Id ? [user1Id, user2Id] : [user2Id, user1Id];
+
+  // Check if conversation exists
+  const existing = await db
+    .select()
+    .from(conversations)
+    .where(and(eq(conversations.user1Id, minId), eq(conversations.user2Id, maxId)))
+    .limit(1);
+
+  if (existing.length > 0) {
+    return existing[0];
+  }
+
+  // Create new conversation
+  const result = await db.insert(conversations).values({
+    user1Id: minId,
+    user2Id: maxId,
+    lastMessageAt: new Date(),
+  });
+
+  return {
+    id: result[0].insertId,
+    user1Id: minId,
+    user2Id: maxId,
+    lastMessageAt: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+}
+
+export async function listConversations(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const convs = await db
+    .select()
+    .from(conversations)
+    .where(or(eq(conversations.user1Id, userId), eq(conversations.user2Id, userId)))
+    .orderBy(desc(conversations.lastMessageAt));
+
+  // Enrich with other user profile and last message
+  const enriched = [];
+  for (const conv of convs) {
+    const otherUserId = conv.user1Id === userId ? conv.user2Id : conv.user1Id;
+    const otherProfile = await db
+      .select()
+      .from(profiles)
+      .where(eq(profiles.userId, otherUserId))
+      .limit(1);
+
+    const lastMsg = await db
+      .select()
+      .from(messages)
+      .where(eq(messages.conversationId, conv.id))
+      .orderBy(desc(messages.createdAt))
+      .limit(1);
+
+    enriched.push({
+      ...conv,
+      otherUser: otherProfile[0] || null,
+      lastMessage: lastMsg[0] || null,
+    });
+  }
+
+  return enriched;
+}
+
+export async function getMessages(conversationId: number, limit = 50) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  return await db
+    .select()
+    .from(messages)
+    .where(eq(messages.conversationId, conversationId))
+    .orderBy(desc(messages.createdAt))
+    .limit(limit);
+}
+
+export async function sendMessage(data: InsertMessage) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.insert(messages).values(data);
+
+  // Update conversation lastMessageAt
+  await db
+    .update(conversations)
+    .set({ lastMessageAt: new Date() })
+    .where(eq(conversations.id, data.conversationId));
+
+  return result[0].insertId;
+}
+
+export async function markMessagesAsRead(conversationId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(messages)
+    .set({ isRead: true })
+    .where(and(eq(messages.conversationId, conversationId), eq(messages.senderId, userId)));
 }
