@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ScrollView, Text, View, TouchableOpacity, Platform, Alert } from "react-native";
+import { ScrollView, Text, View, TouchableOpacity, Platform, Alert, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { ScreenContainer } from "@/components/screen-container";
@@ -44,39 +44,49 @@ export default function OnboardingScreen() {
 
   const upsertProfile = trpc.profile.upsert.useMutation();
 
+  const handleSkipDemo = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    refreshProfile();
+    router.replace("/");
+  };
+
   const handleComplete = async () => {
     if (!role) return;
     try {
-      await upsertProfile.mutateAsync({
+      const payload = {
         appRole: role,
         fullName: fullName || undefined,
         bio: bio || undefined,
-        ...(role === "student" ? {
-          fieldOfInterest: fieldOfInterest || undefined,
-          skills: skills.length > 0 ? skills : undefined,
-          careerGoals: careerGoals || undefined,
-          graduationYear: graduationYear ? parseInt(graduationYear) : undefined,
-          educationStatus: educationStatus || undefined,
-        } : {
-          jobTitle: jobTitle || undefined,
-          company: company || undefined,
-          industry: industry || undefined,
-          location: location || undefined,
-          yearsExperience: yearsExperience ? parseInt(yearsExperience) : undefined,
-          mentoringAreas: mentoringAreas.length > 0 ? mentoringAreas : undefined,
-          availabilityPreference: availabilityPreference || undefined,
-          openToStudents: true,
-        }),
         onboardingCompleted: true,
-      });
+      } as any;
+
+      if (role === "student") {
+        payload.fieldOfInterest = fieldOfInterest || undefined;
+        payload.skills = skills.length > 0 ? skills : undefined;
+        payload.careerGoals = careerGoals || undefined;
+        payload.graduationYear = graduationYear ? parseInt(graduationYear) : undefined;
+        payload.educationStatus = educationStatus || undefined;
+      } else {
+        payload.jobTitle = jobTitle || undefined;
+        payload.company = company || undefined;
+        payload.industry = industry || undefined;
+        payload.location = location || undefined;
+        payload.yearsExperience = yearsExperience ? parseInt(yearsExperience) : undefined;
+        payload.mentoringAreas = mentoringAreas.length > 0 ? mentoringAreas : undefined;
+        payload.availabilityPreference = availabilityPreference || undefined;
+        payload.openToStudents = true;
+      }
+
+      await upsertProfile.mutateAsync(payload);
 
       if (Platform.OS !== "web") {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       }
       refreshProfile();
       router.replace("/");
-    } catch (err) {
-      Alert.alert("Error", "Failed to save profile. Please try again.");
+    } catch (err: any) {
+      console.error("Onboarding error:", err);
+      Alert.alert("Error", err?.message || "Failed to save profile. Please try again.");
     }
   };
 
@@ -129,10 +139,13 @@ export default function OnboardingScreen() {
   // Step 1: Profile details
   return (
     <ScreenContainer edges={["top", "bottom", "left", "right"]}>
+      <View className="flex-row justify-between items-center px-6 py-3 border-b border-border">
+        <BackButton onPress={() => setStep(0)} />
+        <TouchableOpacity onPress={handleSkipDemo}>
+          <Text className="text-sm font-semibold text-primary">Skip</Text>
+        </TouchableOpacity>
+      </View>
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 40 }}>
-        <View className="mb-2">
-          <BackButton onPress={() => setStep(0)} />
-        </View>
 
         <Text className="text-3xl font-bold text-foreground">
           {role === "student" ? "Student Profile" : "Mentor Profile"}
@@ -170,10 +183,9 @@ export default function OnboardingScreen() {
 
         <View className="mt-8">
           <Button
-            title="Complete Setup"
+            title={upsertProfile.isPending ? "Saving..." : "Complete Setup"}
             onPress={handleComplete}
-            loading={upsertProfile.isPending}
-            disabled={!fullName.trim()}
+            disabled={!fullName.trim() || upsertProfile.isPending}
             size="lg"
           />
         </View>

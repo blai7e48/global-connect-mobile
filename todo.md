@@ -38,3 +38,6 @@
 - [x] Build conversation detail screen with message thread
 - [x] Add messaging tab to bottom navigation
 - [x] Seed demo conversations and messages
+- [x] Add skip onboarding button for quick demo access
+- [x] Fix profile input error messages
+- [x] Ensure demo data loads properly on app launch
